@@ -1,0 +1,21 @@
+services:
+
+  postgres:
+    image: 'postgres:14.11'
+    environment:
+      - 'POSTGRES_DB=payments'
+      - 'POSTGRES_PASSWORD=postgres-admin-password'
+      - 'POSTGRES_USER=postgres'
+    ports:
+      - '5432:5432'
+
+  vault:
+    image: hashicorp/vault:1.16.1
+    restart: always
+    command: [ 'vault', 'server', '-dev', '-dev-listen-address=0.0.0.0:8200' ]
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: "secret"
+    ports:
+      - "8200:8200"
+    cap_add:
+      - IPC_LOCK
